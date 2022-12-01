@@ -30,8 +30,6 @@ public class AccountController : Controller
         var signInResult = await _signInManager.PasswordSignInAsync(hasUser, password, true, false);
 
        
-      
-
         if(!signInResult.Succeeded)
         {
             return View();
@@ -42,8 +40,6 @@ public class AccountController : Controller
     }
     public async Task<IActionResult> Logout()
     {
-
-
         await _signInManager.SignOutAsync();
 
         return RedirectToAction(nameof(HomeController.Index), "Home");

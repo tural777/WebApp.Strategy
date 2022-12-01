@@ -24,17 +24,11 @@ public class SettingsController : Controller
     public IActionResult Index()
     {
 
-
         Settings settings = new();
-        if(User.Claims.Where(x=>x.Type==Settings.claimDatabaseType).FirstOrDefault()!=null)
+
+        if (User.Claims.Where(x => x.Type == Settings.claimDatabaseType).FirstOrDefault() != null)
         {
-
-            settings.DatabaseType =(EDatabaseType) int.Parse( User.Claims.First(x => x.Type == Settings.claimDatabaseType).Value);
-
-
-
-
-
+            settings.DatabaseType = (EDatabaseType)int.Parse(User.Claims.First(x => x.Type == Settings.claimDatabaseType).Value);
         }
         else
         {
@@ -52,16 +46,14 @@ public class SettingsController : Controller
 
         var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-
         var newClaim = new Claim(Settings.claimDatabaseType, databaseType.ToString());
-
 
         var claims = await _userManager.GetClaimsAsync(user);
 
         var hasDatabaseTypeClaim = claims.FirstOrDefault(x => x.Type == Settings.claimDatabaseType);
 
 
-        if(hasDatabaseTypeClaim!=null)
+        if (hasDatabaseTypeClaim != null)
         {
 
             await _userManager.ReplaceClaimAsync(user, hasDatabaseTypeClaim, newClaim);
@@ -74,14 +66,11 @@ public class SettingsController : Controller
 
         await _signInManager.SignOutAsync();
 
-       var authenticateResult= await HttpContext.AuthenticateAsync();
+        var authenticateResult = await HttpContext.AuthenticateAsync();
 
 
         await _signInManager.SignInAsync(user, authenticateResult.Properties);
 
         return RedirectToAction(nameof(Index));
-
-
-
     }
 }
